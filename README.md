@@ -17,9 +17,9 @@
 ### [Gitの基本](01-lecture-git-basic/README.md)
 
 * バージョン管理とは
-* 計算物理におけるGitの使い方
 * Gitの仕組みと用語
 * Gitの基本的な使い方
+* 計算物理におけるGitの使い方
 
 ### [ブランチ操作とリモート操作](02-lecture-git-advanced/README.md)
 
