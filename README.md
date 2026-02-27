@@ -4,6 +4,11 @@
 
 [計算物理春の学校 2026](https://compphysschool.github.io/2026/)の共通講義「計算物理屋のためのGit/GitHub入門」のためのサイトです。
 
+[![Website](https://img.shields.io/badge/website-cpss2026--git.github.io-blue)](https://cpss2026-git.github.io/)
+[![Repository](https://img.shields.io/badge/repo-GitHub-black)](https://github.com/cpss2026-git/cpss2026-git.github.io)
+[![Organization](https://img.shields.io/badge/org-cpss2026--git-black)](https://github.com/cpss2026-git)
+ 
+
 ## Gitのインストール
 
 演習の前に、あらかじめGitとVSCodeのインストールを済ませておくこと。
