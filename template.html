@@ -15,34 +15,8 @@
     <meta name="keywords" content="$for(keywords)$$keywords$$sep$, $endfor$">
     $endif$
     <title>$if(title-prefix)$$title-prefix$ – $endif$$pagetitle$</title>
-    <style type="text/css">
-      p {
-        padding-left: 1em;
-      }
 
-      .markdown-body {
-        box-sizing: border-box;
-        min-width: 200px;
-        max-width: 980px;
-        margin: 0 auto;
-        padding: 45px;
-      }
-
-      p.caption {
-        display: none;
-      }
-
-      img {
-        width: 100%
-      }
-
-      @media (max-width: 767px) {
-        .markdown-body {
-          padding: 15px;
-        }
-      }
-    </style>
-    <link rel="stylesheet" href="https://cpss2026-git.github.io/github-markdown.css" type="text/css" />
+    <link rel="stylesheet" href="" type="text/css" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -55,6 +29,7 @@
     $for(header-includes)$
     $header-includes$
     $endfor$
+    <link rel="stylesheet" href="$css$">
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
   </head>
 
