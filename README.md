@@ -8,26 +8,35 @@
 
 [計算物理春の学校 2026](https://compphysschool.github.io/2026/)の共通講義「計算物理屋のためのGit/GitHub入門」のためのサイトです。本リポジトリは、学部3年生用の講義ノート[GitHub演習](https://kaityo256.github.io/github/)の内容をもとに作成しています。
 
-## Gitのインストール
-
-演習の前に、あらかじめGitとVSCodeのインストールを済ませておくこと。
 
 ## 座学
 
-### [Gitの基本](01-lecture-git-basic/README.md)
+### [0. GitやVS Codeのインストール](00-lecture-setup/README.md)
+
+演習の前に、あらかじめGitとVSCodeのインストールを済ませておくこと。
+
+* Gitのインストール
+    * Windows + GitBash
+    * Windows + WSL
+    * Mac
+* VScodeのインストール
+    * Windows
+    * Mac
+
+### [1. Gitの基本](01-lecture-git-basic/README.md)
 
 * バージョン管理とは
 * Gitの仕組みと用語
 * コマンドラインの使い方
 * 計算物理におけるGitの使い方
 
-### [ブランチ操作とリモート操作](02-lecture-git-advanced/README.md)
+### [2. ブランチ操作とリモート操作](02-lecture-git-advanced/README.md)
 
 * ブランチ操作
 * SSHによる認証
 * リモートリポジトリの操作
 
-### [Gitの中身](03-lecture-git-internals/README.md)
+### [3. Gitの中身](03-lecture-git-internals/README.md)
 
 * `.git`ディレクトリの中身
 * Gitのオブジェクト
@@ -45,7 +54,7 @@
 
 ## 演習
 
-### 環境セットアップとGit操作の基本
+### 4. 環境セットアップとGit操作の基本
 
 * Gitの初期設定
 * ファイルの修正
@@ -53,7 +62,7 @@
 * VSCodeからの操作
 * Gitの操作応用編
 
-### GitHub操作の基本
+### 5. GitHub操作の基本
 
 * GitHubのアカウント作成とSSH接続
 * 操作の基本(cloneやpush)
@@ -61,7 +70,7 @@
 * Projectの利用
 * プルリクエストの作成
 
-### GitHubによるウェブアプリケーションのデプロイ
+### 6. GitHubによるウェブアプリケーションのデプロイ
 
 * 機械学習デモ
 * 簡単なゲーム作成
