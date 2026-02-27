@@ -54,7 +54,7 @@
 
 ## 演習
 
-### [4. 環境セットアップとGit操作の基本](04-practice-git/README.md)
+### [4. Gitの基本操作](04-practice-git/README.md)
 
 * Gitの初期設定
 * ファイルの修正
