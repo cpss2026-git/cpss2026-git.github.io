@@ -23,20 +23,20 @@
     * Windows
     * Mac
 
-### [1. Gitの基本](01-lecture-git-basic/README.md)
+### 1. Gitの基本
 
 * バージョン管理とは
 * Gitの仕組みと用語
 * コマンドラインの使い方
 * 計算物理におけるGitの使い方
 
-### [2. ブランチ操作とリモート操作](02-lecture-git-advanced/README.md)
+### 2. ブランチ操作とリモート操作
 
 * ブランチ操作
 * SSHによる認証
 * リモートリポジトリの操作
 
-### [3. Gitの中身](03-lecture-git-internals/README.md)
+### 3. Gitの中身
 
 * `.git`ディレクトリの中身
 * Gitのオブジェクト
