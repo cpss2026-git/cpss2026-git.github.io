@@ -6,7 +6,7 @@
 
 ## 概要
 
-[計算物理春の学校 2026](https://compphysschool.github.io/2026/)の共通講義「計算物理屋のためのGit/GitHub入門」のためのサイトです。
+[計算物理春の学校 2026](https://compphysschool.github.io/2026/)の共通講義「計算物理屋のためのGit/GitHub入門」のためのサイトです。本リポジトリは、学部3年生用の講義ノート[GitHub演習](https://kaityo256.github.io/github/)の内容をもとに作成しています。
 
 ## Gitのインストール
 
@@ -29,7 +29,19 @@
 
 ### [Gitの中身](03-lecture-git-internals/README.md)
 
-* Gitの中身
+* `.git`ディレクトリの中身
+* Gitのオブジェクト
+    * blobオブジェクト
+    * コミットオブジェクト
+    * treeオブジェクト
+* Gitの参照
+    * HEADとブランチの実体
+    * Detached HEAD状態
+    * ブランチの作成と削除
+    * リモートブランチと上流ブランチ
+* インデックス
+    * インデックスの実体と中身
+    * ブランチ切り替えとインデックス
 
 ## 演習
 
