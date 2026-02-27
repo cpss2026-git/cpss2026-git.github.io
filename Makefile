@@ -4,7 +4,10 @@ HTML+=index.html
 TARGET=$(HTML)
 all: $(TARGET)
 
-index.html: README.md
+index.md: README.md
+	sed 's/README.md/index.html/' $< > $@
+
+index.html: index.md
 	pandoc -s $< -c css/style.css -o $@ $(PANDOC_HTMLOPT)
 
 %/index.html: %/README.md
@@ -12,3 +15,5 @@ index.html: README.md
 
 clean:
 	rm -f $(TARGET) index.html
+
+.INTERMEDIATE: index.md

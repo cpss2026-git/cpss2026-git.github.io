@@ -14,20 +14,20 @@
 
 ## 座学
 
-### [Gitの基本](01-lecture-git-basic)
+### [Gitの基本](01-lecture-git-basic/README.md)
 
 * バージョン管理とは
 * 計算物理におけるGitの使い方
 * Gitの仕組みと用語
 * Gitの基本的な使い方
 
-### [ブランチ操作とリモート操作](02-lecture-git-advanced)
+### [ブランチ操作とリモート操作](02-lecture-git-advanced/README.md)
 
 * ブランチ操作
 * SSHによる認証
 * リモートリポジトリの操作
 
-### 進んだ話題
+### [Gitの中身](03-lecture-git-internals/README.md)
 
 * Gitの中身
 
