@@ -1,13 +1,12 @@
 # 計算物理屋のためのGit/GitHub入門
 
-## 概要
-
-[計算物理春の学校 2026](https://compphysschool.github.io/2026/)の共通講義「計算物理屋のためのGit/GitHub入門」のためのサイトです。
-
 [![Website](https://img.shields.io/badge/website-cpss2026--git.github.io-blue)](https://cpss2026-git.github.io/)
 [![Repository](https://img.shields.io/badge/repo-GitHub-black)](https://github.com/cpss2026-git/cpss2026-git.github.io)
 [![Organization](https://img.shields.io/badge/org-cpss2026--git-black)](https://github.com/cpss2026-git)
- 
+
+## 概要
+
+[計算物理春の学校 2026](https://compphysschool.github.io/2026/)の共通講義「計算物理屋のためのGit/GitHub入門」のためのサイトです。
 
 ## Gitのインストール
 
@@ -27,16 +26,28 @@
 * ブランチ操作
 * SSHによる認証
 * リモートリポジトリの操作
-* 進んだGitの使い方
+
+### 進んだ話題
+
+* Gitの中身
 
 ## 演習
 
 ### 環境セットアップとGit操作の基本
 
+* Gitの初期設定
+* ファイルの修正
+* 自動ステージング
+* VSCodeからの操作
+* Gitの操作応用編
+
 ### GitHub操作の基本
 
+* GitHubのアカウント作成とSSH接続
 * 操作の基本(cloneやpush)
-* GitHub操作の応用(issueやprojectの使い方等)
+* Issue管理
+* Projectの利用
+* プルリクエストの作成
 
 ### GitHubによるウェブアプリケーションのデプロイ
 
