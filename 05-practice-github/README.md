@@ -1,0 +1,446 @@
+# GitHubの基本操作
+
+## 目標
+
+* GitHubのアカウントを作成する
+* リモートリポジトリの作成と、ローカルリポジトリとの同期について学ぶ
+* issueの使い方の基本を覚える
+* Project(Automated Kanban)の使い方を覚える
+* プルリクエストを作ってみる
+
+## 課題1: GitHubアカウントを作成とSSH接続
+
+### Step 1: アカウントの作成
+
+まず、GitHubにアカウントを作成する。既にGitHubにアカウントを持っている人はこのステップをスキップしてよい。ユーザ名、メールアドレス、パスワードを入力するが、ユーザー名は今後長く使う可能性があるのでよく考えること。場合によっては本名よりも有名になる可能性もある。メールアドレスは普段使うアドレスを設定しておく。このアドレスは公開されない(公開することもできる)。
+
+[https://github.com/](https://github.com/)にアクセスし、右上から「Sign up」を選ぶ。
+
+* Enter your email : メールアドレスを入力する
+* Create a password: パスワードを入力する
+* Enter a username: GitHubのアカウント名を入力
+* Email Preferences: アナウンスを受け取るか、通常は不要なのでチェックしなくて良い。
+
+以上を入力して「Continue」ボタンを押す。
+
+「Welcome to GitHub」という画面が出てきたら登録完了だ。この画面はまだ使うので、まだブラウザを閉じないこと。
+
+### Step 2: SSH公開鍵の作成
+
+SSH公開鍵のペアを作成する。なお、過去に作成したことがある場合はその鍵が使えるので、このステップを飛ばして良い。ターミナルのホームディレクトリにて、以下を実行せよ。
+
+```sh
+$ ssh-keygen
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/username/.ssh/id_ed25519):  # (1)
+Created directory '/home/username/.ssh'.
+Enter passphrase (empty for no passphrase): # (2)
+Enter same passphrase again:                # (3)
+```
+
+* (1) 秘密鍵を保存する場所を入力する。通常はデフォルトの場所で良いので、何も入力せずエンターキーを入力して良い。
+* (2) ここでパスフレーズを聞かれる。何も入力せずに改行するとパスフレーズ無しとなるが、**必ずパスフレーズを入力すること**。ここではキーを入力しても画面には何も表示されないので注意。
+* (3) 先ほど入力したものと同じパスフレーズを再度入力する。
+
+パスフレーズを二度入力した後、
+
+```txt
+Your identification has been saved in /home/username/.ssh/id_ed25519
+Your public key has been saved in /home/username/.ssh/id_ed25519.pub
+```
+
+といったメッセージが表示されたら成功である。`id_ed25519`が秘密鍵、`id_ed25519.pub`が公開鍵だ。秘密鍵は誰にも見せてはならない。公開鍵は、文字通り公開するための鍵で、これからGitHubに登録するものだ。
+
+### Step 3: SSH公開鍵の登録
+
+GitHubに公開鍵を登録する。先ほどGitHubにログインした状態のブラウザで以下の作業をせよ。
+
+* GitHubの一番右上のアイコンをクリックして現れるメニューの下の方の「Settings」を選ぶ。
+* 左に「Access」というメニューが現れるので「SSH and GPG keys」を選ぶ。
+* 「SSH keys」右にある「New SSH key」ボタンを押す
+* 「Title」と「Key」を入力する。「Key type」は何も選ばなくて良い(Authentication Keyのまま)。Titleはなんでも良いが、例えば「ターミナル」もしくは「University PC」とする。Keyには、`.ssh/id_ed25519`ファイルの中身をコピペする。ターミナルで以下を実行せよ。
+
+```sh
+cat .ssh/id_ed25519.pub
+```
+
+すると、`ssh-ed25519`から始まるテキストが表示されるため、マウスで選択して右クリックから「Copy」、そして、先ほどのGitHubの画面の「Key」のところにペーストし、「New SSH key」ボタンを押す。
+
+`This is a list of SSH keys associated with your account. Remove any keys that you do not recognize.`というメッセージの下に、先ほどつけたTitleの鍵が表示されていれば登録成功だ。
+
+### Step 4: 鍵の登録の確認
+
+正しく鍵が登録されたか見てみよう。ターミナルで、以下を実行せよ。
+
+```sh
+$ ssh -T git@github.com
+```
+
+もし`Are you sure you want to continue connecting (yes/no/[fingerprint])?`というメッセージが表示されたら`yes`と入力する。
+
+`Enter passphrase for key '/path/to/.ssh/id_ed25519':`と表示されたら、先ほど設定したパスフレーズを入力する。その結果、
+
+```txt
+Hi GitHubアカウント名! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+と表示されたら、鍵の登録に成功している。
+
+### Step 5: リポジトリの作成とクローン
+
+では実際にGitHubと通信して、データのやり取りをしてみよう。まずはGitHubでリポジトリを作成して、ローカルにクローンする。
+
+* GitHubのホーム画面を表示する。左上のネコのようなアイコン(Octocat)をクリックするとホーム画面に戻る。
+* ホーム画面に戻ったら「Create repository」ボタンを押す。
+* リポジトリの新規作成画面では、以下の項目を設定しよう。
+    * Repository name: リポジトリの名前。Gitでアクセスするので、英数字だけにしよう。ここでは`github-test`としておく。
+    * Descrption: リポジトリの説明(任意)。ここは日本語でも良いが、とりあえず「test repository」にしておこう。
+    * Choose visiblility: ここで「Public」を選ぶと、全世界の人から見ることができるリポジトリとなる。とりあえずは「Private (自分だけがアクセスできる)」を選んでおこう。
+    * Add README: READMEファイルを作成するか。ここではOnにしておこう。
+    * Add .gitignore: .gitignoreを作成するか。今回は作らなくて良い。
+    * Add license: ライセンスを選ぶ。今回はMIT Licenseを選ぶ。
+* 以上の設定を終了したら「Create repository」ボタンを押す。
+* リポジトリの画面に移るので、右上の緑色の「Code」ボタンをクリックすると、「Clone」というウィンドウが現れるので「SSH」を選ぶ。すると`git@github.com:`から始まるURLが現れるので、それを右の「コピーアイコン」ボタンを押してコピーする。
+
+次に、ローカルマシンで`github`ディレクトリの下に先ほど作ったリポジトリをクローンしよう。以下を実行せよ。
+
+```sh
+cd
+cd github
+git clone git@github.com:アカウント名/github-test.git
+cd github-test
+```
+
+先ほどURLをコピーしていたので、`git clone`まで入力した後で、空白を入力してから右クリックで「Paste」を選べば良い。すると、パスフレーズを要求されるので、先ほど設定した秘密鍵のパスフレーズを入力しよう。正しく公開鍵が登録されていたらクローンできる。
+
+### Step 6: ローカルの修正とpush
+
+手元にクローンしたリポジトリを修正し、GitHubに修正をpushしてみよう。
+
+まず、クローンしたリポジトリの`README.md`を修正しよう。VSCodeの「フォルダを開く」によって、先ほどクローンされた`github-test`ディレクトリを開き、`README.md`を開こう(Vimを使える人はVimで開いても良い)。
+
+すると、以下のような内容が表示されるはずだ。
+
+```md
+# github-test
+test repository
+```
+
+これを、以下のように「Hello Github」と一行追加し、保存せよ。
+
+```md
+# github-test
+test repository
+
+Hello GitHub
+```
+
+この状態で、`README.md`の修正を`git add`して`git commit`しよう。ターミナルで以下を実行せよ。
+
+```sh
+git add README.md
+git commit -m "updates README.md"
+```
+
+これでローカルの「歴史」は、GitHubが記憶している「歴史」よりも先に進んだ。歴史を見てみよう。
+
+```sh
+$ git log --oneline
+1db6b18 (HEAD -> main) updates README.md
+0a103b5 (origin/main, origin/HEAD) Initial commit
+```
+
+コミットハッシュは人によって異なるが、`origin/main`よりも、`HEAD -> main`が一つ先の歴史を指していることがわかる。この「新しくなった歴史」をGitHubに教えよう。ターミナルで以下を実行せよ。
+
+```sh
+git push
+```
+
+パスフレーズを聞かれるので入力せよ。これでローカルの修正がリモート(GitHub)に反映された。もう一度ブラウザでGitHubのリポジトリを見てみよう。ブラウザをリロードしてみよ。ローカルの変更が反映され、画面に「Hello GitHub」の画面が表示されたら成功だ。
+
+## 課題2: ローカルのリポジトリをGitHubに登録
+
+先ほどはGitHub側で新規リポジトリを作り、それをローカルにクローンした。しかし、まずローカルで開発を進め、ある程度形になったらGitHubに登録することの方が多いであろう。そこで、ローカルでリポジトリを作ってからGitHubに登録する作業を体験しよう。
+
+### Step 1: ローカルにリポジトリを作る
+
+ターミナルの`github`ディレクトリ以下に`test2`というディレクトリを作ろう。
+
+```sh
+cd
+cd github
+mkdir test2
+cd test2
+```
+
+ここでまた`README.md`ファイルを作る。VSCodeで「フォルダーを開く」から`github/test2`ディレクトリを開き、ファイルの追加ボタンを押して`README.md`を新規作成する。
+
+内容は何でも良いが、例えば以下の内容を入力して保存しよう。
+
+```md
+# test2
+
+2nd repository
+```
+
+この状態で、Gitリポジトリとして初期化し、最初のコミットをしよう。ターミナルので以下を実行せよ。
+
+```sh
+git init
+git add README.md
+git commit -m "initial commit"
+```
+
+### Step 2: GitHubにベアリポジトリを作る
+
+GitHubのホーム画面の左上の「Repositories」の右にある「New」をクリックする。Repository nameはtest2、Descriptionは無くても良いが、とりあえず2nd repositoryとしておこう。また、今回もPrivateリポジトリとする。
+
+空のリポジトリを作りたいので、「Initialize this repository with:」のチェックは全て外した状態で「Create Repository」とすること。
+
+すると、先ほどとは異なり、全くファイルを含まない空のリポジトリが作成される。そこには「次にすべきこと」がいくつか書いてあるが、まずは、「Quick setup — if you’ve done this kind of thing before」のしたにある「HTTPS」「SSH」のボタンのうち、「SSH」を押す。
+
+その後、「既に存在するリポジトリをpushする(...or push an existing repository from the command line)」を実行するため、そこに書かれている以下のコマンドをコピーする。
+
+```sh
+git remote add origin git@github.com:アカウント名/test2.git
+git branch -M main
+git push -u origin main
+```
+
+これをターミナルに貼り付けて実行すれば、プッシュできる。「Ctrl+C」ではなく、この状態で、もう一度GitHubの当該リポジトリを見てみよう。ブラウザをリロードせよ。リポジトリにREADME.mdが作成された状態になるはずだ。
+
+## 課題3: Issue管理
+
+Gitでは、原則としてメインブランチで作業をしない。これから作業をする内容によってブランチを作成し、そのブランチ上で作業し、完成したらメインブランチにマージする、という作業を繰り返すことで開発をすすめる。それぞれの作業に対応するブランチを作業ブランチ(トピックブランチもしくはフィーチャーブランチ)と呼ぶ。
+
+一般に、必要な作業は複数同時に発生する。このとき、どのタスクを実行中で、どのタスクが手つかずか、タスク管理をしたくなる。原則としてタスクと作業ブランチは一対一に対応するのであるから、それらをツールで一度に管理したくなるのは自然であろう。それがGitHubのissueである。
+
+GitHubを使う場合、
+
+* これから行う作業をissueに登録する。
+* 登録されたissueのうち、これから手をつけるissueに対応した作業ブランチを作成する
+* 作業ブランチで作業し、修正をコミットする
+* メインブランチにマージする
+
+という流れで開発をすすめる。issueとは「課題」という意味であり、一般に課題を管理するシステムをIssue Tracking System (ITS)と呼ぶ。一種のTodo リストだと思えば良い。GitHubはITSの機能を持っている。
+
+以下ではブランチとIssueを連携させた開発について体験しよう。
+
+### Step 1: Issueの作成
+
+* 先ほど作った`github-test`リポジトリに移動せよ。左上のOctocatのアイコンをクリックしてホーム画面に戻り、「Top repositories」の「アカウント名/github-test」を選べばよい。
+* 「Code」「Issues」「Pull requests」「Actions」「Projects」などのメニューが並んだタブから「Issues」を選び、「New Issue」ボタンを押す。画面の最上部の「Issues」と間違えないこと。
+* Titleに「READMEの修正」と書く
+* コメント(Adda descriptionの下)に「内容を追加」と書く。
+* Labelsとして「enhancement」を選ぶ。
+
+以上の操作の後「Create」ボタンをクリックする。すると、「READMEの修正 #1」というissueが作られたはずだ。ここで「#1」とあるのはissue番号であり、issueを作るたびに連番で付与される。この画面は後で使うので、そのままブラウザを閉じないこと。
+
+### Step 2: ブランチの作成
+
+次に、issueに対応するブランチを作成する。ブランチの命名規則には様々な流儀があるが、先ほどつけたラベル(enhancement)、issue番号(1)、そして修正内容を含めるのが一般的だ。ここではディレクトリ型の命名規則を採用しよう。ディレクトリ型の命名規則では「ラベル/issue番号/内容」という名前のブランチを作成する。今回、「enhancement」というラベルをつけたが、これは「新しい機能(feature)を追加する」という意味なので、「feat」とする。あとはissue番号1番、READMEの修正なので、全てまとめて`feat/1/README`というブランチを作ることにする。
+
+ターミナルで以下を実行せよ。
+
+```sh
+cd
+cd github
+cd github-test
+git switch -c feat/1/README
+```
+
+### Step 3: コミットとマージ
+
+今、カレントブランチが`feat/1/README`ブランチとなったはずだ。このブランチ上で、README.mdに一行追加しよう。
+
+```sh
+# test
+test repository
+
+Hello GitHub
+modifies README
+```
+
+修正したら、`git add`、`git commit`するが、コミットメッセージを`closes #1`とする。また、`closes`と`#1`の間には空白を入れる。シャープ`#`を忘れたり、全角にしたり、数字との間に空白を挟んだりしないこと。
+
+```sh
+git add README.md
+git commit -m "closes #1"
+```
+
+修正を`main`に取り込もう。
+
+```sh
+git switch main
+git merge feat/1/README
+```
+
+### Step 4: 修正のプッシュとissueのクローズ
+
+以上の修正をpushする。pushする前に、先ほどのissueの画面をブラウザで表示しておくこと。ブラウザの画面が見える状態でターミナルから`git push`する。
+
+```sh
+git push
+```
+
+ブラウザのissueの画面を見てみよう。push後に自動的にissueが閉じられたはずだ。
+
+このように、`fixes`、`closes`といった動詞と`#1`のような形でissue番号が含まれたコミットメッセージを含むコミットがpushされると、GitHubがそれを検出し、自動的に対応するissueを閉じてくれる。
+
+不要になったブランチは消しておこう。
+
+```sh
+git branch -d feat/1/README
+```
+
+## 課題4: Projectの利用
+
+issueには「open (未完了)」と「closed (完了)」の二状態しかないが、issueが増えてくると、いまどのissueがどういう状態なのかをより細かく管理したくなる。例えば未完了と完了の間に、「作業中」という状態が欲しくなる。このような状態を管理するのがProjectだ。以下では、もっとも基本的なProjectであるKanbanを使ってみよう。
+
+### Step 1: Projectの作成
+
+まずはBoard(Kanban)方式のプロジェクトを作成し、リポジトリに関連付けよう。以下の作業を実施せよ。
+
+1. GitHubの、自分のアカウント`github-test`リポジトリを表示する
+1. 上のタブから「Project」を選び、現れた「+ New project」ボタンをクリック。
+1. 左のメニューから「Board」を選び、「Project name」を「Kanban」に変更してから「Create」ボタンを押す。
+
+### Step 2: Issueの作成とProjectへの関連付け
+
+またgithub-testリポジトリに戻る。左上のアイコンをクリックし、リポジトリから`github-test`を選ぶ。
+
+上のタブから「Issues」をクリックし、「New Issue」ボタンを押し、新たにissueを作る。Titleは「READMEの修正」とする。Issueのコメントには、他のissueを参照したり、チェックボックスを作る機能があるので試してみよう。コメントに以下の内容を記述せよ。
+
+```md
+- [ ] 修正1 (#1 に追加)
+- [ ] 修正2
+```
+
+ここで「`#`」と数字の間には空白をいれず、「`#1`」の後には半角空白を入れるのをわすれないこと。また、`- [ ]`の間には半角空白を入れる。入力をしたら「Preview」タブを見て、チェックボックスができているか、別のissueにリンクされているか確認すること。
+
+ラベルは先ほどと異なるもので試したいので「documentation」を選ぶ。
+
+このissueをprojectと関連付けよう。右の「Labels」の下にある「Projects」を開き、先ほど作った「Kanban」を選ぼう。
+
+以上の準備が済んだら「Create」ボタンを押し、issueを作る。この画面はまた使うのでブラウザを閉じないこと。
+
+### Step 3: ブランチの作成
+
+ターミナルに戻り、ブランチを作成しよう。今回はラベルが`documentation`、issue番号が2番、内容がREADMEの修正なので、`doc/2/README`としよう。ターミナルの`github-test`リポジトリで以下を実行せよ。
+
+```sh
+git switch -c doc/2/README
+```
+
+ブランチを作成したら、このissueのステータスを「作業中」にしよう。GitHubの`github-test`リポジトリの「Projects」タブから「Kanban」を選ぶ。
+
+すると、「No Status」のところに「READMEの修正」というカードが出来ているはずなので、マウスで「In progress」にドラッグしよう。また「Issues」タブにもどって先ほどのissueを見てみると、「Projects」の「Kanban」で、状態が「In progress」になっていることがわかる。
+
+状態とブランチの関係はプロジェクトやチームによって異なるが、例えば「ブランチを作ったらIn progressにする」というルールにしておくと、逆に「In progressになっていれば、ブランチがあるはず」とわかって便利だ。
+
+### Step 4: 修正とマージ
+
+また`README.md`を修正しよう。「Hello Kanban」という一行を追加せよ。
+
+```md
+# test
+test repository
+
+Hello GitHub
+modifies README
+Hello Kanban
+```
+
+ファイルを保存したら、今度は`fixes #2`というメッセージでコミットする。
+
+```sh
+git add README.md
+git commit -m "fixes #2"
+```
+
+また`main`ブランチに戻って、修正を取り込もう。まだpushしないこと。
+
+```sh
+git switch main
+git merge doc/2/README
+```
+
+### Step 5: 修正のプッシュとカードの移動
+
+マージが終了したらブラウザで先ほどの「Kanban」の画面を見よう。まだカードは「In progress」にある。
+
+この状態でターミナルから`git push`しよう。
+
+```sh
+git push
+```
+
+2番のIssueが閉じられると同時に、自動でカードが「In progress」から「Done」に移動したはずだ。
+
+
+## 課題5: プルリクエストを作ってみる
+
+GitHubでは、公開されているリポジトリを自分の場所に「コピー」することができる。これをforkと呼ぶ。公開リポジトリは、HTTPSによりクローンはできるが、書き込み権限がなければ修正できない。しかし、forkすれば自分の所持するリポジトリとなるので、好きなように修正できる(ただし、ライセンスには気を付けること)。
+
+### Step 1: リポジトリのfork
+
+まず、既存のリポジトリをforkしよう。以下のサイトにアクセスせよ。
+
+* [`https://github.com/cpss2026-git/pullreq-test`](https://github.com/cpss2026-git/pullreq-test)
+
+このサイトの右上に「Fork」というボタンがあるので、それを押す。すると自分のアカウントのリポジトリとしてコピーされる。
+
+### Step 2: リポジトリのクローン
+
+ブラウザのURLが`https://github.com/自分のアカウント/リポジトリ名`になったら、フォークが完了している。ローカルにクローンしよう。「Code」ボタンの「Clone」からリモートリポジトリをコピーできる。プロトコルがHTTPSではなくSSHになっていることを確認すること。
+
+```sh
+cd
+cd github
+git clone git@github.com:アカウント名/pullreq_2025.git
+cd pullreq_2025
+```
+
+### Step 3: ブランチの作成
+
+次に、ブランチを作成するが、ブランチ名を「自分のGitHubアカウント名」のSHA-1ハッシュの上位7桁としよう。例えばアカウント名が`watanabe`である時、以下のコマンドを実行せよ。
+
+```sh
+$ echo watanabe | shasum
+89be149ce7de4c9dd73baeab4e4d068e6995470a  -
+```
+
+上記のSHA-1ハッシュは各自異なるため、以下は適宜読み替えること。
+
+表示された上位7桁`89be149`をブランチ名として、ブランチを作ろう。
+
+```sh
+git switch -c 89be149
+```
+
+### Step 4: ファイルの追加とプッシュ
+
+先ほどのSHA-1ハッシュをファイル名として、ファイルを作ろう。
+
+```sh
+echo Hello > 89be149952e1380212b0998f07a6afe4e5f00428
+```
+
+できたファイルを`git add`、`git commit`しよう。
+
+```sh
+git add 89be149952e1380212b0998f07a6afe4e5f00428
+git commit -m "adds a file"
+```
+
+最後に修正をプッシュしよう。
+
+```sh
+git push origin 89be149
+```
+
+`git push origin`の後にブランチ名を入れるのを忘れないこと。
+
+### Step 5. プルリクエストの作成
+
+GitHubのフォークしたページを見ると、上部に「Compare & pull requst」というボタンが出来ているので押す。すると「Open a pull request」という画面に遷移するので、タイトルとコメントを入力する。タイトルは「add a file」、コメントはなんでも良いが、例えば「よろしくお願いします。」などとしておく。最後に「Create a pull request」を押せば、fork元にプルリクエストが飛ぶ。講義後、まとめて私がマージするが、その際にメールが飛ぶはずである。

@@ -10,7 +10,7 @@
 
 ### Step 1: 初期設定
 
-Git Bash (以下、ターミナルと呼ぶ)を開き、以下を実行せよ。
+ターミナルを開き、以下を実行せよ。
 
 ```sh
 git config --global user.name "ユーザー名"
@@ -385,7 +385,7 @@ Git from VS Code
 
 そのファイル名の右にある「+」マークをクリックしよう。README.mdが「変更」から「ステージング済みの変更」に移動したはずだ。
 
-これはGit Bashで
+これはターミナルで
 
 ```sh
 git add README.md
@@ -397,7 +397,7 @@ git add README.md
 
 ![VS Code_commit](fig/vscode_commit.png)
 
-これでコミットができた。これは、Git Bashで
+これでコミットができた。これは、ターミナルで
 
 ```sh
 git commit -m "commit from VS Code"

@@ -62,7 +62,7 @@
 * VSCodeからの操作
 * Gitの操作応用編
 
-### 5. GitHub操作の基本
+### [5. GitHubの基本操作](05-practice-github/README.md)
 
 * GitHubのアカウント作成とSSH接続
 * 操作の基本(cloneやpush)
