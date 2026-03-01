@@ -62,7 +62,15 @@
 * VSCodeからの操作
 * Gitの操作応用編
 
-### [5. GitHubの基本操作](05-practice-github/README.md)
+### [5. Gitの応用操作](05-practice-git-advanced/README.md)
+
+* `git amend`によりコミットが変更されることを確認する
+* `git merge`の衝突を解決する
+* `git rebase`により歴史を改変する
+* `git rebase`の衝突を解決する
+* `git bisect`を使ってみる
+
+### [6. GitHubの基本操作](06-practice-github/README.md)
 
 * GitHubのアカウント作成とSSH接続
 * 操作の基本(cloneやpush)
@@ -70,7 +78,7 @@
 * Projectの利用
 * プルリクエストの作成
 
-### [6. GitHubによるウェブアプリケーションのデプロイ](06-practice-deploy/README.md)
+### [7. GitHubによるウェブアプリケーションのデプロイ](07-practice-deploy/README.md)
 
 * 機械学習デモ
 * 簡単なゲーム作成
