@@ -25,32 +25,20 @@
 
 ### 1. Gitの基本
 
-* バージョン管理とは
-* Gitの仕組みと用語
-* 計算物理におけるGitの使い方
-* コマンドラインの使い方
+* [バージョン管理とは](https://speakerdeck.com/kaityo256/01-a-vcs)
+* [Gitの仕組みと用語](https://speakerdeck.com/kaityo256/01-b-term)
+* [計算物理におけるGitの使い方](https://speakerdeck.com/kaityo256/01-c-compphys)
+* [コマンドラインの使い方](https://speakerdeck.com/kaityo256/01-d-cli)
 
 ### 2. ブランチ操作とリモート操作
 
-* ブランチ操作
-* SSHによる認証
-* リモートリポジトリの操作
+* [ブランチ操作](https://speakerdeck.com/kaityo256/02-a-branch)
+* [SSHによる認証](https://speakerdeck.com/kaityo256/02-b-ssh)
+* [リモートリポジトリの操作](https://speakerdeck.com/kaityo256/02-c-remote)
 
 ### 3. Gitの中身
 
-* `.git`ディレクトリの中身
-* Gitのオブジェクト
-    * blobオブジェクト
-    * コミットオブジェクト
-    * treeオブジェクト
-* Gitの参照
-    * HEADとブランチの実体
-    * Detached HEAD状態
-    * ブランチの作成と削除
-    * リモートブランチと上流ブランチ
-* インデックス
-    * インデックスの実体と中身
-    * ブランチ切り替えとインデックス
+* [Gitの中身](https://speakerdeck.com/kaityo256/03-a-git-internals)
 
 ## 演習
 
