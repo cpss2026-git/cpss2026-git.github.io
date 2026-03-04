@@ -44,6 +44,7 @@
 
 ### [4. Gitの基本操作](04-practice-git/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/04-a-git-basic)
 * Gitの初期設定
 * ファイルの修正
 * 自動ステージング
@@ -52,6 +53,7 @@
 
 ### [5. Gitの応用操作](05-practice-git-advanced/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/05-a-git-advanced)
 * `git amend`によりコミットが変更されることを確認する
 * `git merge`の衝突を解決する
 * `git rebase`により歴史を改変する
@@ -60,6 +62,7 @@
 
 ### [6. GitHubの基本操作](06-practice-github/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/06-a-github-basic)
 * GitHubのアカウント作成とSSH接続
 * 操作の基本(cloneやpush)
 * Issue管理
@@ -68,6 +71,7 @@
 
 ### [7. GitHubによるウェブアプリケーションのデプロイ](07-practice-deploy/README.md)
 
+* [講義スライド](https://speakerdeck.com/kaityo256/07-a-github-deploy)
 * 機械学習デモ
 * 簡単なゲーム作成
 
