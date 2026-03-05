@@ -71,7 +71,7 @@
 
 ### [7. GitHubによるウェブアプリケーションのデプロイ](07-practice-deploy/README.md)
 
-* [講義スライド](https://speakerdeck.com/kaityo256/07-a-github-deploy)
+* [講義スライド](https://speakerdeck.com/kaityo256/07-github-deploy)
 * 機械学習デモ
 * 簡単なゲーム作成
 
