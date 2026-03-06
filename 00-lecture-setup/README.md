@@ -2,11 +2,19 @@
 
 ## Gitのインストール
 
+WindowsでGitを使うには、WSL (Ubuntu)を使う方法と、Git for Windowsを使う方法がある。
+
 ### Windows (Ubuntu)
 
-WSLのUbuntuを使う場合。あらかじめWSLが有効であり、Ubuntuがインストールされている必要がある。
+まずWSLをインストールする。PowerShellを「管理者」として実行し、開いたシェルで以下を実行する。
 
-Ubuntu上で
+```sh
+wsl --install
+```
+
+これでデフォルトでUbuntuがインストールされる。Windowsの検索欄でUbuntuと入力するとUbuntuが起動する。よく使うのでタスクバーにピン止めしておくとよい。ただし、デフォルトではPowerShellが起動してしまうため、「設定」の「スタートアップ」から「既定のプロファイル」をUbuntuにしておくとよい。
+
+Ubuntuが起動したら、
 
 ```sh
 sudo apt update
@@ -26,6 +34,17 @@ git version 2.43.0
 ```
 
 等と表示されればインストール完了である(バージョンは異なる場合がある)。
+
+### Windows (Git for Windows)
+
+以下の手順でGit for Windowsをインストールする。
+
+1. Git for Windowsのウェブサイト([https://gitforwindows.org/](https://gitforwindows.org/))にアクセスし、「Download」ボタンをクリックする。
+1. ダウンロードした実行ファイル(Git-2.53.0-64-bit.exeのような名前)を実行する。
+1. あとは指示に従ってインストールを進める。ほとんどデフォルトのまま「Next」でよいが、途中で「Choosing the default editor used by Git」という箇所でエディタを選ぶ箇所がある。「Vimではないエディタを選ぶことを推奨する」みたいなことが書いてあるが、私はVimのままにしておくことを勧める。
+1. 最後に出てくる「Install」ボタンを押すとインストールが始まる。インストールが終わったら「Finish」で完了。
+
+インストール後、Windowsの検索ウィンドウに「git bash」と入力するとGit Bashが表示されるので、それをクリックすることでGit Bashが起動する。
 
 ### Mac
 
