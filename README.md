@@ -13,15 +13,7 @@
 
 ### [0. GitやVS Codeのインストール](00-lecture-setup/README.md)
 
-演習の前に、あらかじめGitとVSCodeのインストールを済ませておくこと。
-
-* Gitのインストール
-    * Windows + GitBash
-    * Windows + WSL
-    * Mac
-* VScodeのインストール
-    * Windows
-    * Mac
+* [この講義について](https://speakerdeck.com/kaityo256/00-setup)
 
 ### 1. Gitの基本
 
