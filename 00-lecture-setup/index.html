@@ -24,30 +24,52 @@
         <h1 class="title">GitやVS Codeのインストール</h1>
                               </header>
                   <h1 id="gitのインストール">Gitのインストール</h1>
+                  <p>WindowsでGitを使うには、WSL
+                  (Ubuntu)を使う方法と、Git for
+                  Windowsを使う方法がある。</p>
                   <h2 id="windows-ubuntu">Windows (Ubuntu)</h2>
-                  <p>WSLのUbuntuを使う場合。あらかじめWSLが有効であり、Ubuntuがインストールされている必要がある。</p>
-                  <p>Ubuntu上で</p>
+                  <p>まずWSLをインストールする。PowerShellを「管理者」として実行し、開いたシェルで以下を実行する。</p>
                   <div class="sourceCode" id="cb1"><pre
-                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install git</span></code></pre></div>
-                  <p>を実行せよ。インストールが完了したら、</p>
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wsl</span> <span class="at">--install</span></span></code></pre></div>
+                  <p>これでデフォルトでUbuntuがインストールされる。Windowsの検索欄でUbuntuと入力するとUbuntuが起動する。よく使うのでタスクバーにピン止めしておくとよい。ただし、デフォルトではPowerShellが起動してしまうため、「設定」の「スタートアップ」から「既定のプロファイル」をUbuntuにしておくとよい。</p>
+                  <p>Ubuntuが起動したら、</p>
                   <div class="sourceCode" id="cb2"><pre
-                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code></pre></div>
-                  <p>を実行せよ。</p>
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install git</span></code></pre></div>
+                  <p>を実行せよ。インストールが完了したら、</p>
                   <div class="sourceCode" id="cb3"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>git version 2.43.0</span></code></pre></div>
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code></pre></div>
+                  <p>を実行せよ。</p>
+                  <div class="sourceCode" id="cb4"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>git version 2.43.0</span></code></pre></div>
                   <p>等と表示されればインストール完了である(バージョンは異なる場合がある)。</p>
+                  <h2 id="windows-git-for-windows">Windows (Git for
+                  Windows)</h2>
+                  <p>以下の手順でGit for Windowsをインストールする。</p>
+                  <ol type="1">
+                  <li>Git for Windowsのウェブサイト(<a
+                  href="https://gitforwindows.org/">https://gitforwindows.org/</a>)にアクセスし、「Download」ボタンをクリックする。</li>
+                  <li>ダウンロードした実行ファイル(Git-2.53.0-64-bit.exeのような名前)を実行する。</li>
+                  <li>あとは指示に従ってインストールを進める。ほとんどデフォルトのまま「Next」でよいが、途中で「Choosing
+                  the default editor used by
+                  Git」という箇所でエディタを選ぶ箇所がある。「Vimではないエディタを選ぶことを推奨する」みたいなことが書いてあるが、私はVimのままにしておくことを勧める。</li>
+                  <li>最後に出てくる「Install」ボタンを押すとインストールが始まる。インストールが終わったら「Finish」で完了。</li>
+                  </ol>
+                  <p>インストール後、Windowsの検索ウィンドウに「git
+                  bash」と入力するとGit
+                  Bashが表示されるので、それをクリックすることでGit
+                  Bashが起動する。</p>
                   <h2 id="mac">Mac</h2>
                   <p>Macの場合は、Homebrewからインストールする。ターミナルから</p>
-                  <div class="sourceCode" id="cb4"><pre
-                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> update</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install git</span></code></pre></div>
-                  <p>を実行せよ。インストールが完了したら、</p>
                   <div class="sourceCode" id="cb5"><pre
-                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code></pre></div>
-                  <p>を実行せよ。</p>
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> update</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install git</span></code></pre></div>
+                  <p>を実行せよ。インストールが完了したら、</p>
                   <div class="sourceCode" id="cb6"><pre
-                  class="sourceCode txt"><code class="sourceCode default"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>git version 2.53.0</span></code></pre></div>
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code></pre></div>
+                  <p>を実行せよ。</p>
+                  <div class="sourceCode" id="cb7"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>git version 2.53.0</span></code></pre></div>
                   <p>と表示されればインストール完了である(バージョンは異なる場合がある)。</p>
                   <h1
                   id="vscodeのインストール">VSCodeのインストール</h1>
@@ -78,8 +100,8 @@
                   <figcaption aria-hidden="true">WSL</figcaption>
                   </figure>
                   <p>これをインストールした状態で、WSLのターミナルから適当なディレクトリで</p>
-                  <div class="sourceCode" id="cb7"><pre
-                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> .</span></code></pre></div>
+                  <div class="sourceCode" id="cb8"><pre
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> .</span></code></pre></div>
                   <p>を実行する。VS
                   Codeが開いて、左下に「WSL:Ubuntu」と表示されれば成功だ。</p>
                   <figure>
