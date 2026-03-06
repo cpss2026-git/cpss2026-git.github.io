@@ -75,6 +75,10 @@
 * 機械学習デモ
 * 簡単なゲーム作成
 
+### [8. 機械学習とウェブへのデプロイ](08-ml-deploy/README.md)
+
+* Pythonによる学習とJavaScript向けにエクスポート
+
 ## ライセンス
 
 本リポジトリに含まれるドキュメント（文章やパワーポイントファイル、PDF）は[ Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/)で、ソースコードは[MIT License](https://opensource.org/licenses/MIT)で公開します。

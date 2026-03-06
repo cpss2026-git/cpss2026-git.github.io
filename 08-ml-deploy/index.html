@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+                <title>機械学習とウェブへのデプロイ</title>
+
+    <link rel="stylesheet" href="" type="text/css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+        <link rel="stylesheet" href="../css/style.css">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <article class="markdown-body">
+                  <header>
+        <h1 class="title">機械学習とウェブへのデプロイ</h1>
+                              </header>
+                  <h1 id="目標">目標</h1>
+                  <ul>
+                  <li>ローカルで機械学習を行い、学習済みの重みをウェブアプリケーション向けに変換する</li>
+                  <li>変換した重みを使ってウェブアプリケーションの動作確認を行う</li>
+                  <li>デプロイする</li>
+                  </ul>
+                  <h1 id="課題1-fashon-mnistの学習とデプロイ">課題1:
+                  Fashon-MNISTの学習とデプロイ</h1>
+                  <p>MNISTは有名な手書き数字のデータセットだが、数字ではちょっと面白くない。数字の代わりに服やカバン、靴などを認識するデータセット
+                  Fashon-MNISTを試してみよう。また、前回はすでに学習済み、ウェブ用に変換済みのデータを使ってデプロイだけを体験したが、今回はPythonによる学習からデータの変換、ウェブへのデプロイまですべて行ってみよう。</p>
+                  <h2 id="step-1-リポジトリのfork">Step 1:
+                  リポジトリのfork</h2>
+                  <p>GitHubにログインした状態で、以下のサイトにアクセスせよ。</p>
+                  <p><a
+                  href="https://github.com/cpss2026-git/fashion-mnist-demo">https://github.com/cpss2026-git/fashion-mnist-demo</a></p>
+                  <p>このサイトの右上に「Fork」というボタンがあるので、それを押す。すると「Create
+                  a new
+                  fork」という画面になるので設定はデフォルトのまま「Create
+                  Fork」ボタンを押す。すると、<code>fashion-mnist-demo</code>がforkされ、自分のアカウントのリポジトリとしてコピーされる。</p>
+                  <h2 id="step-2-リポジトリのクローン">Step 2:
+                  リポジトリのクローン</h2>
+                  <p>GitHubの自分のアカウントの<code>fashion-mnist-demo</code>をクローンしよう。<a
+                  href="https://github.com/">https://github.com/</a>を開き、Repositoriesから「fashion-mnist-demo」を選ぶ。「Code」ボタンの「Clone」から、リモートリポジトリのURLをコピーしよう。その後、ターミナルで以下を実行することでリポジトリをクローンせよ。</p>
+                  <div class="sourceCode" id="cb1"><pre
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> github</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone git@github.com:アカウント名/fashion-mnist-demo.git</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> fashion-mnist-demo</span></code></pre></div>
+                  <h2 id="step-3-仮想環境の構築">Step 3:
+                  仮想環境の構築</h2>
+                  <p>仮想環境を構築する。このとき、Pythonのバージョンとして3.11以上が必要となる。もし環境のPythonのバージョンが古い場合は、Pyenvなどで新しいバージョンを入力すること。</p>
+                  <p>ターミナルで以下を実行せよ。</p>
+                  <div class="sourceCode" id="cb2"><pre
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install tensorflow tensorflowjs</span></code></pre></div>
+                  <p>Macの場合は、python3.11を使って仮想環境を作ってもよい(pyenvを使ってもよい)。</p>
+                  <div class="sourceCode" id="cb3"><pre
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3.11</span> <span class="at">-m</span> venv .venv</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install <span class="at">--upgrade</span> pip</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install tensorflow tensorflowjs</span></code></pre></div>
+                  <p>仮想環境をアクティベート後は、<code>python3</code>を指定すればよい。</p>
+                  <h2 id="step-4-訓練">Step 4: 訓練</h2>
+                  <p>データセットの読み込みとモデルの学習をさせてみよう。以下を実行せよ。</p>
+                  <div class="sourceCode" id="cb4"><pre
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> train.py</span></code></pre></div>
+                  <p>実行後、以下のような出力がされたら実行に成功している。なお、数字の詳細は環境によって異なる。</p>
+                  <div class="sourceCode" id="cb5"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Epoch 1/5</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>1875/1875 ━━━━━━━━━━━━━━━━━━━━ 3s 1ms/step - accuracy: 0.8266 - loss: 0.4958    Epoch 2/5</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>1875/1875 ━━━━━━━━━━━━━━━━━━━━ 2s 1ms/step - accuracy: 0.8658 - loss: 0.3749  </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Epoch 3/5</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>1875/1875 ━━━━━━━━━━━━━━━━━━━━ 2s 1ms/step - accuracy: 0.8769 - loss: 0.3376  </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>Epoch 4/5</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>1875/1875 ━━━━━━━━━━━━━━━━━━━━ 2s 1ms/step - accuracy: 0.8852 - loss: 0.3126  </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>Epoch 5/5</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>1875/1875 ━━━━━━━━━━━━━━━━━━━━ 2s 1ms/step - accuracy: 0.8916 - loss: 0.2939  </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>313/313 ━━━━━━━━━━━━━━━━━━━━ 0s 878us/step - accuracy: 0.8716 - loss: 0.3586</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>Test accuracy: 0.8715999722480774</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>Model was saved.</span></code></pre></div>
+                  <p>コード実行後、<code>model.keras</code>というファイルが作成されている。これが学習済みモデルを保存したファイルである。</p>
+                  <h2 id="step-6-学習テスト">Step 6: 学習テスト</h2>
+                  <p>正しく学習できたか確認してみよう。以下を実行せよ。</p>
+                  <div class="sourceCode" id="cb6"><pre
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> check.py</span></code></pre></div>
+                  <p>これは、学習に使っていない100個のデータについて、学習済みモデルに分類させ、正解か不正解かチェックを行って、何個正解したかを表示するものだ。例えば、以下のような結果が出力される。</p>
+                  <div class="sourceCode" id="cb7"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>0: true=Boot     pred=Boot     Correct</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>1: true=Pullover pred=Pullover Correct</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>2: true=Trouser  pred=Trouser  Correct</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>(snip)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>98: true=Coat     pred=Coat     Correct</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>99: true=Pullover pred=Pullover Correct</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>Accuracy: 86/100 = 86.00%</span></code></pre></div>
+                  <p>この例では、100個中86個正解、すなわち正解率86%であった。</p>
+                  <h2 id="step-5-変換">Step 5: 変換</h2>
+                  <p>Pythonで学習したモデル<code>model.keras</code>を、JavaScript
+                  (正確にはTensorFlowJS)向けに変換しよう。まず、モデルの内容をエクスポートする。以下を実行せよ。</p>
+                  <div class="sourceCode" id="cb8"><pre
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> export.py</span></code></pre></div>
+                  <p>これにより、<code>model.keras</code>から、<code>export</code>ディレクトリが作成される。</p>
+                  <p>さらに、このディレクトリからJSONを作成する。以下を実行せよ。</p>
+                  <div class="sourceCode" id="cb9"><pre
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tensorflowjs_converter</span> export docs/model</span></code></pre></div>
+                  <p>これにより、<code>export</code>ディレクトリの内容から、<code>docs/model</code>に<code>model.json</code>と<code>group1-shard1of1.bin</code>が作成される。</p>
+                  <p>なお、setuptoolsのバージョンによっては、以下のようなエラーが起きる場合がる。</p>
+                  <div class="sourceCode" id="cb10"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Traceback (most recent call last):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  File &quot;/home/watanabe/github/fashion-mnist-demo/.venv/bin/tensorflowjs_converter&quot;, line 3, in &lt;module&gt;</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    from tensorflowjs.converters.converter import pip_main</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  File &quot;/home/watanabe/github/fashion-mnist-demo/.venv/lib/python3.12/site-packages/tensorflowjs/__init__.py&quot;, line 21, in &lt;module&gt;</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    from tensorflowjs import converters</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  File &quot;/home/watanabe/github/fashion-mnist-demo/.venv/lib/python3.12/site-packages/tensorflowjs/converters/__init__.py&quot;, line 21, in &lt;module&gt;</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    from tensorflowjs.converters.converter import convert</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  File &quot;/home/watanabe/github/fashion-mnist-demo/.venv/lib/python3.12/site-packages/tensorflowjs/converters/converter.py&quot;, line 38, in &lt;module&gt;</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    from tensorflowjs.converters import tf_saved_model_conversion_v2</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  File &quot;/home/watanabe/github/fashion-mnist-demo/.venv/lib/python3.12/site-packages/tensorflowjs/converters/tf_saved_model_conversion_v2.py&quot;, line 51, in &lt;module&gt;</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    import tensorflow_hub as hub</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  File &quot;/home/watanabe/github/fashion-mnist-demo/.venv/lib/python3.12/site-packages/tensorflow_hub/__init__.py&quot;, line 85, in &lt;module&gt;</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    _ensure_tf_install()</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  File &quot;/home/watanabe/github/fashion-mnist-demo/.venv/lib/python3.12/site-packages/tensorflow_hub/__init__.py&quot;, line 61, in _ensure_tf_install</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    from pkg_resources import parse_version</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>ModuleNotFoundError: No module named &#39;pkg_resources&#39;</span></code></pre></div>
+                  <p>これは、setuptoolsのバージョンが新しすぎることが原因なので、setuptoolsを一度アンインストールし、バージョン80.9.0ををインストールすればよい。</p>
+                  <div class="sourceCode" id="cb11"><pre
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip uninstall setuptools</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> pip install <span class="st">&quot;setuptools==80.9.0&quot;</span></span></code></pre></div>
+                  <p>その後、もう一度<code>tensorflowjs_converter</code>を実行すればよい。</p>
+                  <h2 id="step-6-vs-codeの起動">Step 6: VS
+                  Codeの起動</h2>
+                  <p>VS
+                  Codeの「フォルダーを開く」から<code>~/github/fashion-mnist-demo</code>を開く。その後、VS
+                  Codeで<code>docs/index.html</code>を表示している状態で、右下の「Go
+                  Live」をクリックして、Live
+                  Serverを立ち上げる。以下のような画面が表示されるはずである。</p>
+                  <figure>
+                  <img src="fig/web1.png" alt="web1" />
+                  <figcaption aria-hidden="true">web1</figcaption>
+                  </figure>
+                  <p>このうち、左の「Please Draw
+                  here」にマウスで絵が描ける。それを28x28ピクセルにしたものが右の「Input
+                  Image」であり、これがモデルに入力される。</p>
+                  <p>何か絵を描くと、モデルがそれを何であるかを判断する。</p>
+                  <figure>
+                  <img src="fig/web2.png" alt="web2" />
+                  <figcaption aria-hidden="true">web2</figcaption>
+                  </figure>
+                  <p>例えば、上記は、サンダルと判断されている。</p>
+                  <p>画面の下に、各クラス10個ずつデータセットのサンプルがあるので、すべてのクラスが表示されるように試してみるとよいだろう。</p>
+                  <p>終わったらLive Serverを終了する。VS
+                  Codeの右下の「Go Live」があったところに「Port:
+                  5500」とあるので、そこをクリックする。</p>
+                  <h2 id="step-7-学習済みモデルの追加">Step 7:
+                  学習済みモデルの追加</h2>
+                  <p>先ほど学習したモデルの返還後の重みをGit管理しよう。以下を実行せよ。</p>
+                  <div class="sourceCode" id="cb12"><pre
+                  class="sourceCode sh"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add docs/model</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">&quot;adds model&quot;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push</span></code></pre></div>
+                  <h2 id="step-8-pagesの設定">Step 8: Pagesの設定</h2>
+                  <p>先ほどと同様な手順で、GitHub
+                  Pagesを公開しよう。GitHubの自身の<code>fashon-mnist-demo</code>リポジトリを開いてから、以下を実行せよ。</p>
+                  <ul>
+                  <li>上のタブの「Settings」を選ぶ。</li>
+                  <li>左のメニューから「Pages」を選ぶ。</li>
+                  <li>「GitHub
+                  Pages」という画面になるので、「Source」は「Deploy from
+                  a
+                  branch」のまま、「Branch」が「None」となっているのでボタンをクリックし、<code>main</code>を選ぶ。</li>
+                  <li>「<code>/root</code>」というボタンが現れるので、クリックして「<code>/docs</code>」を選んで「Save」ボタンを押す。</li>
+                  </ul>
+                  <p>そのまま数分待ってから、その画面をリロードしよう。</p>
+                  <p>準備ができていれば</p>
+                  <div class="sourceCode" id="cb13"><pre
+                  class="sourceCode txt"><code class="sourceCode default"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Your site is live at https://ユーザ名.github.io/fashion-mnist-demo/</span></code></pre></div>
+                  <p>という表示がされる。表示されたら、その表示の右にある「Visit
+                  site」ボタンを押すこと。Fashon
+                  MNISTの分類テストデモがブラウザで実行されるはずである。</p>
+          </article>
+  </body>
+
+  </html>
