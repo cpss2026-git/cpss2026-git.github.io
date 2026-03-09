@@ -152,8 +152,8 @@
                   <p>となっている。<code>alice.txt</code>と<code>bob.txt</code>には、それぞれの行動が記されている。差分を見てみよう。</p>
                   <div class="sourceCode" id="cb20"><pre
                   class="sourceCode sh"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff HEAD^</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff HEAD^ HEAD^^</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff HEAD^^ HEAD^^^</span></code></pre></div>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff HEAD^^ HEAD^</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff HEAD^^^ HEAD^^</span></code></pre></div>
                   <p>上記は歴史を一つずつさかのぼっている。「ボブが学校へ行く」「Aliceがアイスが無くなっていることに気づく」「Aliceがアイスを確認する」という順番になっている。</p>
                   <p>さて、このままではBobがAliceのアイスを食べたことがバレてしまい、大目玉をくらう。<code>git rebase</code>で歴史を改変してアリバイを作ってあげよう。</p>
                   <h2 id="step-3-ブランチの作成">Step 3:
@@ -207,8 +207,8 @@
                   <p><code>alice.txt</code>と<code>bob.txt</code>には、それぞれの行動が記されている。差分を見てみよう。</p>
                   <div class="sourceCode" id="cb26"><pre
                   class="sourceCode sh"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff HEAD^</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff HEAD^ HEAD^^</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff HEAD^^ HEAD^^^</span></code></pre></div>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff HEAD^^ HEAD^</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff HEAD^^^ HEAD^^</span></code></pre></div>
                   <p>これで一つずつ歴史をさかのぼることができる。「アリスがアイスがないことに気づく」「アリスがアイスの存在を確認する」「ボブが学校に行く」という歴史になっていることがわかるだろう。</p>
                   <h1 id="課題4-git-rebaseによる衝突の解決">課題4: git
                   rebaseによる衝突の解決</h1>
